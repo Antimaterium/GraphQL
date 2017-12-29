@@ -4,22 +4,18 @@ import { ModelsInterface } from '../interfaces/ModelsInterface';
 import { fail } from 'assert';
 
 export interface PostAttributes {
-    id?: number
-    title?: string
-    content?: string
-    photo?: string
-    author?: number
-    createdAt?: string
-    updatedAt?: string
+    id?         : number
+    title?      : string
+    content?    : string
+    photo?      : string
+    author?     : number
+    createdAt?  : string
+    updatedAt?  : string
 }
 
-export interface PostInstance extends Sequelize.Instance<PostAttributes> {
+export interface PostInstance extends Sequelize.Instance<PostAttributes> {}
 
-}
-
-export interface PostModel extends BaseModelInterface, Sequelize.Model<PostInstance, PostAttributes> {
-
-}
+export interface PostModel extends BaseModelInterface, Sequelize.Model<PostInstance, PostAttributes> {}
 
 export default (sequelize: Sequelize.Sequelize, DataTypes: Sequelize.DataTypes): PostModel => {
 
@@ -42,8 +38,9 @@ export default (sequelize: Sequelize.Sequelize, DataTypes: Sequelize.DataTypes):
             type: DataTypes.BLOB({
                 length: 'long'
             }),
-            allowNull: true
-        },
+            allowNull: false
+        }
+    }, {
         tableName: 'posts'
     })
 
