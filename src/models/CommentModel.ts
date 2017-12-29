@@ -51,4 +51,6 @@ export default (sequelize: Sequelize.Sequelize, DataTypes: Sequelize.DataTypes):
         })
     }
 
+    return comment
+
 }
