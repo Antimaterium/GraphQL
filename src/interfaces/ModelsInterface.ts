@@ -4,8 +4,8 @@ import { CommentModel } from "../models/CommentModel"
 
 export interface ModelsInterface {
 
-    User: UserModel
-    Post: PostModel
-    Comment: CommentModel
+    Comment:    CommentModel    
+    Post:       PostModel
+    User:       UserModel
 
 }

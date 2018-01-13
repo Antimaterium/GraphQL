@@ -19,7 +19,7 @@ const userTypes = `
     input UserUpdateInput {
         name    : String!
         emails  : String!
-        photo   : String!
+        photo   : String
     }
 
     input UserUpdatePasswordInput {
@@ -29,7 +29,7 @@ const userTypes = `
 `
 
 const userQueries = `
-    users(firts: int, offset: int): [ User! ]!
+    users(firts: Int, offset: Int): [ User! ]!
     user(id: ID!): User
 `
 
