@@ -18,8 +18,7 @@ const commentTypes = `
 `
 
 const commentQueries = `
-    commentsByPost(post: ID!, firts: Int, offset: Int): [ Comment! ]!
-    post(id: ID!): Post
+    commentsByPost(postId: ID!, firts: Int, offset: Int): [ Comment! ]!
 `
 
 const commentMutations = `
