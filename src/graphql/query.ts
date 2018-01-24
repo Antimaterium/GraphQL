@@ -5,7 +5,7 @@ import { commentQueries } from './resources/comment/comment.schema'
 const Query = `
     type Query {
         ${commentQueries}
-        ${postQueries}
+        ${postQueries}      
         ${userQueries}
     }
 `

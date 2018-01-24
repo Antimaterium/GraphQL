@@ -3,6 +3,7 @@ import { Transaction } from "sequelize"
 
 import { DbConnection } from "../../../interfaces/DbConnectionInterface"
 import { UserInstance } from "../../../models/UserModel"
+import { handleError } from "../../../utils/utils"
 
 export const userResolvers = {
 
@@ -11,9 +12,10 @@ export const userResolvers = {
             return db.Post
                 .findAll({
                     where: {author: user.get('id')},
-                    limit: first
+                    limit: first,
                     offset: offset
                 })
+                .catch(handleError)
         }
     },
 
@@ -23,14 +25,17 @@ export const userResolvers = {
                 limit: first,
                 offset: offset
             })
+            .catch(handleError)
         },
         user: (parent, {id}, {db} : {db: DbConnection}, info: GraphQLResolveInfo) => {
+            id = parseInt(id)
             return db.User
                 .findById(id)
                 .then((user: UserInstance) => {
                     if(!user) throw new Error(`Usuário com o id ${id} não existe`)
                     return user
                 })
+                .catch(handleError)
         }
     },
 
@@ -40,6 +45,7 @@ export const userResolvers = {
             return db.sequelize.transaction((t: Transaction) => {
                 return db.User.create(input, {transaction: t})  
             })
+            .catch(handleError)
         },
         updateUser: (parent, {input, id}, {db} : {db: DbConnection}, info: GraphQLResolveInfo) => {
             id = parseInt(id)
@@ -51,8 +57,9 @@ export const userResolvers = {
                         return user.update(input, {transaction: t})
                     })
             })
+            .catch(handleError)
         },
-        updatePassword: (parent, {input, id}, {db} : {db: DbConnection}, info: GraphQLResolveInfo) => {
+        updateUserPassword: (parent, {input, id}, {db} : {db: DbConnection}, info: GraphQLResolveInfo) => {
             id = parseInt(id)
             return db.sequelize.transaction((t: Transaction) => {
                 return db.User
@@ -63,6 +70,7 @@ export const userResolvers = {
                             .update(input, {transaction: t})
                             .then((user: UserInstance) => user)
                     })
+                    .catch(handleError)
             })
         },
         deleteUser: (parent, {id}, {db} : {db: DbConnection}, info: GraphQLResolveInfo) => {
@@ -76,6 +84,7 @@ export const userResolvers = {
                             .destroy({transaction: t})
                             .then(user => user)
                     })
+                    .catch(handleError)
             })
         }
 

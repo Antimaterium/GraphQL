@@ -50,7 +50,8 @@ export default (sequelize: Sequelize.Sequelize, DataTypes: Sequelize.DataTypes):
             allowNull: true,
             defaultValue: null
         }
-    }, {
+    }, 
+    {
         tableName: 'users',
         hooks: {
             beforeCreate: (user: UserInstance, options: Sequelize.CreateOptions): void => {
@@ -61,8 +62,8 @@ export default (sequelize: Sequelize.Sequelize, DataTypes: Sequelize.DataTypes):
                 if(user.changed('password')) {
                     const salt = genSaltSync()
                     user.password = hashSync(user.password, salt)
-                
-            }
+                }    
+            }        
         }
     })
     

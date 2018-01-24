@@ -1,7 +1,8 @@
 import { DbConnection } from '../../../interfaces/DbConnectionInterface'
 import { GraphQLResolveInfo } from 'graphql'
-import { Transaction } from 'sequelize';
+import { Transaction } from 'sequelize'
 import { CommentInstance } from '../../../models/CommentModel'
+import { handleError } from '../../../utils/utils'
 
 export const commentResolvers = {
 
@@ -9,22 +10,26 @@ export const commentResolvers = {
         user: (comment, args, {db}: {db: DbConnection}, info: GraphQLResolveInfo) => {
             return db.User
                 .findById(comment.get('user'))
+                .catch(handleError)
         },
 
         post: (comment, args, {db}: {db: DbConnection}, info: GraphQLResolveInfo) => {
             return db.Post
                 .findById(comment.get('post'))
+                .catch(handleError)
         }
     },
 
     Query: {
-        commentByPost: (parent, {postId, first = 10, offset = 0}, {db}: {db: DbConnection}, info: GraphQLResolveInfo) => {
+        commentsByPost: (parent, {postId, first = 10, offset = 0}, {db}: {db: DbConnection}, info: GraphQLResolveInfo) => {
+            postId = parseInt(postId)
             return db.Comment
                 .findAll({
                     where: {post: postId},
                     limit: first,
                     offset: offset
                 })
+                .catch(handleError)
         }
     },
 
@@ -34,6 +39,7 @@ export const commentResolvers = {
                 return db.Comment
                     .create(input, {transaction: t})
             })
+            .catch(handleError)
         },
 
         updateComment: (parent, {id, input}, {db}: {db: DbConnection}, info: GraphQLResolveInfo) => {
@@ -47,6 +53,7 @@ export const commentResolvers = {
                             .update(input, {transaction: t})
                     })
             })
+            .catch(handleError)
         },
 
         deleteComment: (parent, {id}, {db}: {db: DbConnection}, info: GraphQLResolveInfo) => {
@@ -61,6 +68,7 @@ export const commentResolvers = {
                             .then(comment => comment)
                     })
             })
+            .catch(handleError)
         }
     }
 }
